@@ -1,23 +1,31 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-    }
-}
-
 plugins {
-  id "org.jetbrains.intellij" version "0.4.10"
+    id 'org.jetbrains.intellij' version '1.3.0'
+    id 'java'
 }
 
-apply plugin: 'java'
-apply plugin: 'org.jetbrains.intellij'
+group 'com.github.anonfunc.vcidea'
+version '0.0.10'
 
+repositories {
+    mavenCentral()
+}
+
+buildSearchableOptions.enabled = false
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version 'LATEST-EAP-SNAPSHOT'
-    pluginName 'Voice Code IDEA'
-    updateSinceUntilBuild false
-    sameSinceUntilBuild true
+    version = 'IU-2021.2.3'
+    pluginName = 'Voice Code IDEA'
 }
 
 tasks.withType(JavaCompile) {
@@ -25,15 +33,13 @@ tasks.withType(JavaCompile) {
     options.deprecation = true
 }
 
-group 'com.github.anonfunc.vcidea'
-version '0.0.10'
-
-
-publishPlugin {
-    username 'anonfunc'
-    password jetbrainsPassword
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+test {
+    useJUnitPlatform()
 }
 
-repositories {
-    mavenCentral()
-}
+
